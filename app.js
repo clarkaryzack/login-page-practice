@@ -6,7 +6,6 @@ const mustacheExpress = require('mustache-express');
 const data = require('./data.js');
 const app = express();
 
-
 app.engine('mustache', mustacheExpress());
 app.set('views', './views');
 app.set('view engine', 'mustache');
@@ -52,9 +51,31 @@ app.post('/', function(req, res){
   }
 });
 
+app.post('/foo', function(req, res){
+	res.redirect('/foo');
+});
+
+app.post('/bar', function(req, res){
+	res.redirect('/bar');
+});
+
 app.get('/login', function (req, res) {
 	res.render('login');
-})
+});
+
+app.get('/foo', function (req, res) {
+	if (req.session.foo === undefined){
+		req.session.foo = 1} else {
+			req.session.foo ++}
+	res.render('foo', {foo: req.session.foo});
+});
+
+app.get('/bar', function (req, res) {
+	if (req.session.bar === undefined){
+		req.session.bar = 1} else {
+			req.session.bar ++}
+	res.render('bar', {bar: req.session.bar});
+});
 
 app.listen(3000, function(){
   console.log('Started express application!')
